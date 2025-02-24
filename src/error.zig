@@ -76,7 +76,7 @@ pub const ErrorCode = enum(i8) {
 
 pub const ErrorClass = enum(u8) {
     None = 0,
-    Nomemory = 1,
+    NoMemory = 1,
     Os = 2,
     Invalid = 3,
     Reference = 4,
@@ -116,6 +116,39 @@ pub const ErrorClass = enum(u8) {
 
 pub const Error = error{
     Generic,
+    NotFound,
+    Exists,
+    Ambiguous,
+    BufferSize,
+    User,
+    BareRepo,
+    UnbornBranch,
+    Unmerged,
+    NonFastForward,
+    InvalidSpec,
+    Conflict,
+    Locked,
+    Modified,
+    Auth,
+    Certificate,
+    Applied,
+    Peel,
+    Eof,
+    Invalid,
+    Uncommitted,
+    Directory,
+    MergeConflict,
+    Passthrough,
+    Iterover,
+    Retry,
+    Mismatch,
+    IndexDirty,
+    ApplyFail,
+    Owner,
+    Timeout,
+    Unchanged,
+    NotSupported,
+    Readonly,
 };
 
 pub const GitError = struct {
@@ -150,8 +183,42 @@ pub const GitError = struct {
     }
 
     pub fn toError(self: Self) Error {
-        _ = self;
-        return Error.Generic;
+        return switch (self.code()) {
+            .Generic => Error.Generic,
+            .NotFound => Error.NotFound,
+            .Exists => Error.Exists,
+            .Ambiguous => Error.Ambiguous,
+            .BufferSize => Error.BufferSize,
+            .User => Error.User,
+            .BareRepo => Error.BareRepo,
+            .UnbornBranch => Error.UnbornBranch,
+            .Unmerged => Error.Unmerged,
+            .NonFastForward => Error.NonFastForward,
+            .InvalidSpec => Error.InvalidSpec,
+            .Conflict => Error.Conflict,
+            .Locked => Error.Locked,
+            .Modified => Error.Modified,
+            .Auth => Error.Auth,
+            .Certificate => Error.Certificate,
+            .Applied => Error.Applied,
+            .Peel => Error.Peel,
+            .Eof => Error.Eof,
+            .Invalid => Error.Invalid,
+            .Uncommitted => Error.Uncommitted,
+            .Directory => Error.Directory,
+            .MergeConflict => Error.MergeConflict,
+            .Passthrough => Error.Passthrough,
+            .Iterover => Error.Iterover,
+            .Retry => Error.Retry,
+            .Mismatch => Error.Mismatch,
+            .IndexDirty => Error.IndexDirty,
+            .ApplyFail => Error.ApplyFail,
+            .Owner => Error.Owner,
+            .Timeout => Error.Timeout,
+            .Unchanged => Error.Unchanged,
+            .NotSupported => Error.NotSupported,
+            .Readonly => Error.Readonly,
+        };
     }
 
     pub fn log(self: Self, message: []const u8) void {
