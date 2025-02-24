@@ -34,7 +34,7 @@ zig fetch --save git+https://github.com/blurrycat/gitz
 ```
 
 Then you can add the library as a dependency in your `build.zig`:
-```
+```zig
 const gitz_dep = b.dependency("gitz", .{
     .target = target,
     .optimize = optimize,
