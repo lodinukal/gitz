@@ -1,0 +1,15 @@
+.{
+    .name = "gitz",
+    .version = "0.0.0",
+    .dependencies = .{
+        .libgit2 = .{
+            .url = "https://github.com/blurrycat/libgit2/archive/refs/heads/feat/zig-0.14-dev.tar.gz",
+            .hash = "12205a4b118991d4136cf630c10ef27f38d89047eedae5adc48163266f4c512f9205",
+        },
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+    },
+}
