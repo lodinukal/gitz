@@ -51,7 +51,7 @@ pub const Repository = struct {
     }
 
     /// Attempts to open an alread-existing repository at or above `search_path`
-    pub fn discover(search_path: []const u8, options: DiscoverOptions) !Self {
+    pub fn discover(search_path: [:0]const u8, options: DiscoverOptions) !Self {
         init.init();
 
         var root_buf: raw.git_buf = .{};
@@ -143,7 +143,7 @@ pub const Repository = struct {
         return Reference{ .rawptr = ptr };
     }
 
-    pub fn findBranch(self: Self, name: []const u8, branch_type: Branch.Type) !Branch {
+    pub fn findBranch(self: Self, name: [:0]const u8, branch_type: Branch.Type) !Branch {
         var ptr: ?*raw.git_reference = null;
         try err.tryCall("could not find branch", raw.git_branch_lookup(&ptr, self.rawptr, name.ptr, @intFromEnum(branch_type)));
         return Branch{ .inner = Reference{ .rawptr = ptr } };
