@@ -1,5 +1,7 @@
 const std = @import("std");
 
+const TlsBackend = enum { openssl, mbedtls };
+
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
@@ -15,16 +17,22 @@ pub fn build(b: *std.Build) void {
         .root_module = lib_mod,
     });
 
-    // TODO: expose build options to downstream users too
+    const tls_backend = b.option(
+        TlsBackend,
+        "tls-backend",
+        "Choose Unix TLS/SSL backend (default is mbedtls)",
+    ) orelse .mbedtls;
+    const enable_ssh = b.option(bool, "enable-ssh", "Enable SSH support") orelse false;
     const libgit2_dep = b.dependency("libgit2", .{
         .target = target,
         .optimize = optimize,
         // This spits out warnings about libssh2 not being neither ET_REL nor
         // LLVM bitcode but I:
         // 1: don't know what that means for now
-        // 2: don't really care since it doesn't seem to actually block the build
-        .@"enable-ssh" = true,
-        .@"tls-backend" = .openssl,
+        // 2: don't really care to investigate since it doesn't seem to actually
+        // block the build
+        .@"enable-ssh" = enable_ssh,
+        .@"tls-backend" = tls_backend,
     });
     lib.linkLibrary(libgit2_dep.artifact("git2"));
 
