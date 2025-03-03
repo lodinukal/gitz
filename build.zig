@@ -1,6 +1,6 @@
 const std = @import("std");
 
-const TlsBackend = enum { openssl, mbedtls };
+const TlsBackend = enum { openssl, mbedtls, none };
 
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
@@ -20,8 +20,8 @@ pub fn build(b: *std.Build) void {
     const tls_backend = b.option(
         TlsBackend,
         "tls-backend",
-        "Choose Unix TLS/SSL backend (default is mbedtls)",
-    ) orelse .mbedtls;
+        "Choose Unix TLS/SSL backend",
+    ) orelse .none;
     const enable_ssh = b.option(bool, "enable-ssh", "Enable SSH support") orelse false;
     const libgit2_dep = b.dependency("libgit2", .{
         .target = target,

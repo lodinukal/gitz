@@ -3,8 +3,8 @@
     .version = "0.0.0",
     .dependencies = .{
         .libgit2 = .{
-            .url = "https://github.com/blurrycat/libgit2/archive/refs/heads/feat/zig-0.14-dev.tar.gz",
-            .hash = "12205a4b118991d4136cf630c10ef27f38d89047eedae5adc48163266f4c512f9205",
+            .url = "git+https://github.com/blurrycat/libgit2#b3a6cdadeb6533add19111c6014e40373085ed2a",
+            .hash = "12200cc56ee7128442be72709a88d559069f6818c428249990b8db9fcd6e45930f64",
         },
     },
     .paths = .{
