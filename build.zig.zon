@@ -1,5 +1,6 @@
 .{
-    .name = "gitz",
+    .name = .gitz,
+    .fingerprint = 0x3b30c4d923d16393,
     .version = "0.0.0",
     .dependencies = .{
         .libgit2 = .{
