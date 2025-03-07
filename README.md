@@ -2,9 +2,10 @@
 
 **NOTE:** Please read disclaimer below.
 
-Zig 0.14.0-dev wrapper for libgit2.
+Zig 0.14.0 wrapper for libgit2.
 
-The goal is to have a nice and ergonomic wrapper similar to `git2` in Rust.
+The goal is to have a nice and ergonomic wrapper similar to the `git2` crate
+in Rust.
 
 ## Disclaimer
 
@@ -20,9 +21,6 @@ them.
 There are no tests in the code and organization is complete garbage. I am aware
 the code is shit, but please do not hesitate to tell me how and why as I am
 eager to learn more Zig!
-
-The library currently uses my personal fork of [allyourcodebase/libgit2](https://github.com/allyourcodebase/libgit2)
-since it has not yet been updated to work with Zig 0.14.
 
 With this out of the way, let's get into how you can actually use this library.
 
