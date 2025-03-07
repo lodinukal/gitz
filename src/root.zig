@@ -1,6 +1,10 @@
-const git2 = @cImport({
-    @cInclude("git2.h");
-});
+pub const Branch = @import("branch.zig");
+pub const Oid = @import("oid.zig");
+pub const Reference = @import("reference.zig");
+pub const Repository = @import("repository.zig");
+pub const Statuses = @import("statuses.zig");
 
-pub usingnamespace @import("repository.zig");
-pub usingnamespace @import("error.zig");
+test {
+    const std = @import("std");
+    std.testing.refAllDecls(@This());
+}

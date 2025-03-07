@@ -1,8 +1,8 @@
 const std = @import("std");
 
-const TlsBackend = enum { openssl, mbedtls, none };
+const TlsBackend = enum { openssl, mbedtls };
 
-pub fn build(b: *std.Build) void {
+pub fn build(b: *std.Build) !void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
@@ -15,15 +15,16 @@ pub fn build(b: *std.Build) void {
         .linkage = .static,
         .name = "gitz",
         .root_module = lib_mod,
+        .use_llvm = optimize != .Debug,
     });
 
     const tls_backend = b.option(
         TlsBackend,
         "tls-backend",
         "Choose Unix TLS/SSL backend",
-    ) orelse .none;
+    ) orelse .mbedtls;
     const enable_ssh = b.option(bool, "enable-ssh", "Enable SSH support") orelse false;
-    const libgit2_dep = b.dependency("libgit2", .{
+    const libgit2 = b.dependency("libgit2", .{
         .target = target,
         .optimize = optimize,
         // This spits out warnings about libssh2 not being neither ET_REL nor
@@ -34,7 +35,10 @@ pub fn build(b: *std.Build) void {
         .@"enable-ssh" = enable_ssh,
         .@"tls-backend" = tls_backend,
     });
-    lib.linkLibrary(libgit2_dep.artifact("git2"));
+    lib.linkLibrary(libgit2.artifact("git2"));
+
+    const libgit2_c_src = b.dependency("libgit2_c", .{});
+    lib.addIncludePath(libgit2_c_src.path("include"));
 
     b.installArtifact(lib);
 
@@ -65,4 +69,20 @@ pub fn build(b: *std.Build) void {
     const run_lib_unit_tests = b.addRunArtifact(lib_unit_tests);
     const test_step = b.step("test", "Run unit tests");
     test_step.dependOn(&run_lib_unit_tests.step);
+
+    const include_pattern = try std.fmt.allocPrint(
+        b.allocator,
+        "--include-pattern={s}",
+        .{b.pathJoin(&.{ b.build_root.path.?, "src" })},
+    );
+    defer b.allocator.free(include_pattern);
+    const cover_cmd = b.addSystemCommand(&.{
+        "kcov",
+        "--clean",
+        include_pattern,
+        b.pathJoin(&.{ b.install_path, "cover" }),
+    });
+    cover_cmd.addArtifactArg(lib_unit_tests);
+    const cover_step = b.step("cover", "Generate test coverage report");
+    cover_step.dependOn(&cover_cmd.step);
 }

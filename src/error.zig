@@ -1,7 +1,7 @@
 const std = @import("std");
 const init = @import("init.zig");
 const raw = @import("raw.zig");
-const gitlog = @import("log.zig");
+const logger = @import("logger.zig");
 
 pub const ErrorCode = enum(i8) {
     /// Generic error
@@ -222,7 +222,7 @@ pub const GitError = struct {
     }
 
     pub fn log(self: Self, message: []const u8) void {
-        gitlog.err("{s}: code({d})={} class({d})={} {s}", .{
+        logger.err("{s}: code({d})={} class({d})={} {s}", .{
             message,
             self.raw_code,
             self.code(),

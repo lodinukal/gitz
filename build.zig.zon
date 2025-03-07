@@ -4,8 +4,12 @@
     .version = "0.0.0",
     .dependencies = .{
         .libgit2 = .{
-            .url = "git+https://github.com/blurrycat/libgit2#b3a6cdadeb6533add19111c6014e40373085ed2a",
-            .hash = "12200cc56ee7128442be72709a88d559069f6818c428249990b8db9fcd6e45930f64",
+            .url = "git+https://github.com/allyourcodebase/libgit2#fabb23633d7cdbf55e82993fa0d2f0a4a2fff3c2",
+            .hash = "libgit2-1.9.0-uizqTS9mAACnFpt2pKeMXSjHxzL1Ux0U85n9WXgzGghW",
+        },
+        .libgit2_c = .{
+            .url = "git+https://github.com/libgit2/libgit2?ref=v1.9.0#338e6fb681369ff0537719095e22ce9dc602dbf0",
+            .hash = "N-V-__8AAJbmLwHHxHDWkz0i6WIR6FpNe6tXSLzaPuWtvBBg",
         },
     },
     .paths = .{
