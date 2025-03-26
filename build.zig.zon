@@ -4,12 +4,8 @@
     .version = "0.0.0",
     .dependencies = .{
         .libgit2 = .{
-            .url = "git+https://github.com/allyourcodebase/libgit2#fabb23633d7cdbf55e82993fa0d2f0a4a2fff3c2",
-            .hash = "libgit2-1.9.0-uizqTS9mAACnFpt2pKeMXSjHxzL1Ux0U85n9WXgzGghW",
-        },
-        .libgit2_c = .{
-            .url = "git+https://github.com/libgit2/libgit2?ref=v1.9.0#338e6fb681369ff0537719095e22ce9dc602dbf0",
-            .hash = "N-V-__8AAJbmLwHHxHDWkz0i6WIR6FpNe6tXSLzaPuWtvBBg",
+            .url = "git+https://github.com/allyourcodebase/libgit2#84e36893aeba58800a88253477cc2faf0fd27ae7",
+            .hash = "libgit2-1.9.0-uizqTVXSAAAH3Cp1D9gGmg2VgGEenOOY1hZ2H07qw2T9",
         },
     },
     .paths = .{

@@ -20,6 +20,7 @@ mkdir empty
 pushd empty
 git init
 git branch -m main
+echo -e "[init]\ndefaultBranch = main" >> .git/config
 popd
 
 mkdir discover

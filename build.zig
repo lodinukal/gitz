@@ -1,6 +1,5 @@
 const std = @import("std");
-
-const TlsBackend = enum { openssl, mbedtls };
+pub const libgit2 = @import("libgit2");
 
 pub fn build(b: *std.Build) !void {
     const target = b.standardTargetOptions(.{});
@@ -15,30 +14,22 @@ pub fn build(b: *std.Build) !void {
         .linkage = .static,
         .name = "gitz",
         .root_module = lib_mod,
-        .use_llvm = optimize != .Debug,
     });
 
+    const default_tls_backend: libgit2.TlsBackend = if (target.result.os.tag == .macos) .securetransport else .mbedtls;
     const tls_backend = b.option(
-        TlsBackend,
+        libgit2.TlsBackend,
         "tls-backend",
         "Choose Unix TLS/SSL backend",
-    ) orelse .mbedtls;
+    ) orelse default_tls_backend;
     const enable_ssh = b.option(bool, "enable-ssh", "Enable SSH support") orelse false;
-    const libgit2 = b.dependency("libgit2", .{
+    const libgit2_dep = b.dependency("libgit2", .{
         .target = target,
         .optimize = optimize,
-        // This spits out warnings about libssh2 not being neither ET_REL nor
-        // LLVM bitcode but I:
-        // 1: don't know what that means for now
-        // 2: don't really care to investigate since it doesn't seem to actually
-        // block the build
         .@"enable-ssh" = enable_ssh,
         .@"tls-backend" = tls_backend,
     });
-    lib.linkLibrary(libgit2.artifact("git2"));
-
-    const libgit2_c_src = b.dependency("libgit2_c", .{});
-    lib.addIncludePath(libgit2_c_src.path("include"));
+    lib.linkLibrary(libgit2_dep.artifact("git2"));
 
     b.installArtifact(lib);
 
