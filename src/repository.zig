@@ -61,12 +61,11 @@ pub fn open(repository_path: []const u8) !Repository {
 pub fn clone(
     url: []const u8,
     to: []const u8,
-    options: raw.git_clone_options,
 ) !Repository {
     init.init();
 
     var repository: ?*raw.git_repository = null;
-    const rc = raw.git_clone(&repository, url.ptr, to.ptr, &options);
+    const rc = raw.git_clone(&repository, url.ptr, to.ptr, null);
     if (rc < 0) {
         const git_err = err.GitError.lastError(rc);
         git_err.log("git_clone");
