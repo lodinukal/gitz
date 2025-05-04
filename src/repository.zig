@@ -55,6 +55,28 @@ pub fn open(repository_path: []const u8) !Repository {
     return Repository{ .rawptr = repository };
 }
 
+/// Clones a repository from `url` to `path`.
+///
+/// The path can point to either a normal or a bare repository.
+pub fn clone(
+    url: []const u8,
+    to: []const u8,
+    options: raw.git_clone_options,
+) !Repository {
+    init.init();
+
+    var repository: ?*raw.git_repository = null;
+    const rc = raw.git_clone(&repository, url.ptr, to.ptr, &options);
+    if (rc < 0) {
+        const git_err = err.GitError.lastError(rc);
+        git_err.log("git_clone");
+
+        return git_err.toError();
+    }
+
+    return Repository{ .rawptr = repository };
+}
+
 /// Attempts to open an alread-existing repository at or above `search_path`
 pub fn discover(search_path: [:0]const u8, options: DiscoverOptions) !Repository {
     init.init();
